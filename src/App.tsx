@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Chat from './components/chat/Chat';
-
+import BeyondCompare from './components/beyondcompare/BeyondCompare'
 import {
   BrowserRouter as Router,
   Route,
@@ -11,17 +11,17 @@ import {
 function App() {
   return (
     <Router>
-    <div className="App">
-      <div className="container">
-        <Chat />
-        <hr />
-      </div>
+      <div className="App">
+        <div className="container">
+          <Chat />
+          <hr />
+        </div>
         <Switch>
           <Route exact path="/bcompare">
-            {<h1>becompare</h1>}
+            <BeyondCompare />
           </Route>
         </Switch>
-    </div>
+      </div>
     </Router>
   );
 }

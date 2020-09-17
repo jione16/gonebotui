@@ -4,38 +4,42 @@ import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 
 
-const Chat = () => {
+function Chat(){
     const history = useHistory()
     let [messages, setMessages] = useState([] as Array<Message>)
     let [message, setMessage] = useState('')
+    let [isGettingResponse, setIsGettingResponse] = useState(false)
     const scrollbar = React.useRef<Scrollbars>(null)
     useEffect(() => {
         scrollbar.current?.scrollToBottom()
     }, [])
+
+
     function send() {
+        setIsGettingResponse(true)
         pushMessage({
             id: Date.now(),
             isBotResponse: false,
             text: message
         })
-        getResponse()
-    }
-    async function getResponse() {
-        let data = await axios.get(`http://localhost:1616/baymax?words=${message}`)
-        if (data.data.response === "#beyondcompare") {
-            history.push('/bcompare')
-        }
-        pushMessage({
-            id: Date.now(),
-            isBotResponse: true,
-            text: data.data.response
-        })
+
+        axios.get(`http://localhost:1616/baymax?words=${message}`)
+            .then((data) => {
+                if (data.data.response === "#beyondcompare") {
+                    history.push('/bcompare')
+                }
+                pushMessage({
+                    id: Date.now(),
+                    isBotResponse: true,
+                    text: data.data.response
+                })
+                setIsGettingResponse(false)
+            })
         setMessage('')
     }
 
     function pushMessage(data: Message) {
-        messages.push(data)
-        setMessages(messages)
+        setMessages(prevs => [...prevs, data])
         setTimeout(() => {
             if (scrollbar.current) {
                 console.log(scrollbar.current)
@@ -43,12 +47,25 @@ const Chat = () => {
             }
         }, 50);
     }
+
+    function indicator(isGettingResponse: boolean) {
+        if (isGettingResponse) {
+            return (
+                <div className="typing-indicator align-self-start" >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            )
+        }
+        return <></>
+    }
     return (
         <div className="row">
             <div className="col-md-4 col-12 offset-md-3 mt-4">
 
                 <div className="col-12 mb-2">
-                    <h4 className="fs-13">Chatbot</h4>
+                    <h4 className="fs-13"><img src={require('./images/bot.png')} alt="bot" className="mr-2" style={{width:30}}/> <span style={{color:'#ff8a8a'}}>Baymax</span></h4>
                 </div>
                 <Scrollbars style={{ height: 200 }}
                     ref={scrollbar}
@@ -59,6 +76,7 @@ const Chat = () => {
                                 return <p key={m.id} className={`d-block ${m.isBotResponse ? 'align-self-start balon2' : 'align-self-end balon1'}  mb-1 fs-13`}>{m.text}</p>;
                             })
                         }
+                        {indicator(isGettingResponse)}
                     </div>
                 </Scrollbars>
                 <form onSubmit={(e) => { e.preventDefault(); send() }} className="">
@@ -73,6 +91,7 @@ const Chat = () => {
 }
 
 export default Chat
+
 
 
 
