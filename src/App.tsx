@@ -7,6 +7,7 @@ import {
   Route,
   Switch
 } from 'react-router-dom'
+import Putty from './components/putty/Putty';
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
         <Switch>
           <Route exact path="/bcompare">
             <BeyondCompare />
+          </Route>
+          <Route exact path="/putty">
+            <Putty/>
           </Route>
         </Switch>
       </div>

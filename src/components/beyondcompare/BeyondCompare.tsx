@@ -19,12 +19,9 @@ function BeyondCompare() {
         <div className="container">
 
             <h1 style={{ fontSize: 17 }}>
-                <img src={require('./images/logo.png')} width="17px" className="mr-2" />
+                <img src={require('./images/logo.png')} width="17px" className="mr-2" alt="beyondcompare" />
                 Beyond Compare
                 </h1>
-
-
-
             <div className="main- mt-5">
                 <div className="row">
                     <div className="col-5">

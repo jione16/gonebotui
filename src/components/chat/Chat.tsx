@@ -27,6 +27,8 @@ function Chat(){
             .then((data) => {
                 if (data.data.response === "#beyondcompare") {
                     history.push('/bcompare')
+                }else if(data.data.response === "#putty"){
+                    history.push('/putty')
                 }
                 pushMessage({
                     id: Date.now(),
@@ -79,7 +81,7 @@ function Chat(){
                         {indicator(isGettingResponse)}
                     </div>
                 </Scrollbars>
-                <form onSubmit={(e) => { e.preventDefault(); send() }} className="">
+                <form onSubmit={(e) => { e.preventDefault(); send() }} className="" autoComplete="off">
                     <div className="form-group mt-3">
                         <input type="text" id="message_input" onChange={(e) => { setMessage(e.target.value) }} value={message} className="form-control" style={{ fontSize: 12, borderRadius: 57 }} />
                     </div>
